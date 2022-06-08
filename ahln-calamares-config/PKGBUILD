@@ -1,0 +1,17 @@
+pkgname=ahln-calamares-config
+pkgver=22.04
+pkgrel=01
+pkgdesc="calamares for Ahlnlinux"
+arch=('any')
+url="https://github.com/ahln"
+license=('GPL3')
+makedepends=('git')
+depends=()
+provides=("${pkgname}")
+options=(!strip !emptydirs)
+source=(${pkgname}::"git+${url}/${pkgname}")
+sha256sums=('SKIP')
+package() {
+	install -dm755 ${pkgdir}/etc
+	cp -r ${srcdir}/${pkgname}/etc/* ${pkgdir}${_destname1}
+}
