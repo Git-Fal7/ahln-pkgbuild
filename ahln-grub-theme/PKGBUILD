@@ -3,7 +3,7 @@ pkgver=1
 pkgrel=1
 arch=('any')
 depends=(grub)
-source=('git+https://gitlab.com/git-fal7/theme-grub')
+source=('git+https://github.com/git-fal7/theme-grub')
 makedepends=('git')
 sha256sums=('SKIP')
 
