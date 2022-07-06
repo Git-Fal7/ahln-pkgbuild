@@ -50,28 +50,32 @@ prepare() {
 }
 
 build() {
-	cd $_pkgname-$pkgver
-
-	mkdir -p build
-	cd build
-	cmake .. \
-	-DCMAKE_BUILD_TYPE=Release \
-	-DCMAKE_INSTALL_PREFIX=/usr \
-	-DCMAKE_INSTALL_LIBDIR=lib \
-	-DWITH_PYTHONQT=OFF \
-	-DWITH_KF5DBus=OFF \
-	-DBoost_NO_BOOST_CMAKE=ON \
-	-DWEBVIEW_FORCE_WEBKIT=OFF \
-	-DSKIP_MODULES="webview tracking interactiveterminal initramfs \
-	initramfscfg dracut dracutlukscfg \
-	dummyprocess dummypython dummycpp \
-	dummypythonqt services-openrc \
-	keyboardq localeq welcomeq"
-	make
+	cd ${srcdir}/calamares
+	
+	_cpuCount=$(grep -c -w ^processor /proc/cpuinfo)
+	
+	cmake -S . -Bbuild \
+        -GNinja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_INSTALL_LIBDIR=lib \
+        -DWITH_PYTHONQT=OFF \
+        -DWITH_KF5DBus=OFF \
+        -DBoost_NO_BOOST_CMAKE=ON \
+        -DWEBVIEW_FORCE_WEBKIT=OFF \
+        -DWITH_APPSTREAM=OFF \
+	-DSKIP_MODULES="dracut dracutlukscfg \
+	dummycpp dummyprocess dummypython dummypythonqt \
+	finishedq keyboardq license localeq notesqml oemid \
+	openrcdmcryptcfg packagechooserq \
+	plymouthcfg plasmalnf services-openrc \
+	summaryq tracking usersq webview welcomeq"
+	
+	cmake --build build --parallel $_cpuCount
 }
 
 package() {
-	cd ${_pkgname}-${pkgver}/build
+	cd ${srcdir}/calamares/calamares/build
 	make DESTDIR="$pkgdir" install
 	install -Dm644 "${srcdir}/calamares.desktop" "$pkgdir/etc/xdg/autostart/calamares.desktop"
 	install -Dm644 "${srcdir}/calamares.desktop" "$pkgdir/usr/share/applications/calamares.desktop"
