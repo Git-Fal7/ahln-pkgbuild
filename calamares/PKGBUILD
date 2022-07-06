@@ -31,7 +31,7 @@ sha256sums=('SKIP'
             '56d85ff6bf860b9559b8c9f997ad9b1002f3fccc782073760eca505e3bddd176')
 
 pkgver() {
-	cd ${srcdir}/$_pkgname-$pkgver
+	cd ${srcdir}/calamares
 	_ver="$(cat CMakeLists.txt | grep -m3 -e "  VERSION" | grep -o "[[:digit:]]*" | xargs | sed s'/ /./g')"
 	_git=".r$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
 	printf '%s%s' "${_ver}" #"${_git}"
@@ -39,11 +39,11 @@ pkgver() {
 
 prepare() {
 
-	sed -i -e 's/"Install configuration files" OFF/"Install configuration files" ON/' "$srcdir/${_pkgname}-${pkgver}/CMakeLists.txt"
-	sed -i -e 's/# DEBUG_FILESYSTEMS/DEBUG_FILESYSTEMS/' "$srcdir/${_pkgname}-${pkgver}/CMakeLists.txt"
+	sed -i -e 's/"Install configuration files" OFF/"Install configuration files" ON/' "$srcdir/calamares/CMakeLists.txt"
+	sed -i -e 's/# DEBUG_FILESYSTEMS/DEBUG_FILESYSTEMS/' "$srcdir/calamares/CMakeLists.txt"
 
 	# add pkgrelease to patch-version
-	cd ${_pkgname}-${pkgver}
+	cd ${srcdir}/calamares}
 	_patchver="$(cat CMakeLists.txt | grep -m3 -e CALAMARES_VERSION_PATCH | grep -o "[[:digit:]]*" | xargs)"
 	sed -i -e "s|CALAMARES_VERSION_PATCH $_patchver|CALAMARES_VERSION_PATCH $_patchver-$pkgrel|g" CMakeLists.txt
 
