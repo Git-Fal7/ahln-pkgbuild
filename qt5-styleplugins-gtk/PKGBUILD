@@ -2,7 +2,7 @@ pkgname=qt5-styleplugins-gtk
 pkgver=5.0.0.20170311
 _commit=335dbece103e2cbf6c7cf819ab6672c2956b17b3
 pkgdesc='Additional style plugins for Qt5'
-pkgrel=28
+pkgrel=29
 arch=('x86_64' 'aarch64')
 url="https://github.com/qt/qtstyleplugins"
 conflicts=('qt5-styleplugins')
@@ -43,4 +43,5 @@ package() {
     cd qtstyleplugins-${_commit}
 
     make INSTALL_ROOT="${pkgdir}" install
+    install -Dm644 "$srcdir/${pkgname}.hook" "$pkgdir/usr/share/libalpm/hooks/90-${pkgname}.hook"
 }
