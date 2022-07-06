@@ -12,7 +12,7 @@ depends=('kconfig' 'kcoreaddons' 'kiconthemes' 'ki18n' 'kio' 'solid' 'yaml-cpp' 
          'boost-libs' 'ckbcomp' 'hwinfo' 'qt5-svg' 'polkit-qt5' 'gtk-update-icon-cache' 'plasma-framework'
          'qt5-xmlpatterns' 'squashfs-tools' 'libpwquality' 'efibootmgr' 'icu')
 conflicts=()
-makedepends=('extra-cmake-modules' 'qt5-tools' 'qt5-translations' 'git' 'boost')
+makedepends=('extra-cmake-modules' 'qt5-tools' 'qt5-translations' 'git' 'boost' 'ninja')
 backup=('usr/share/calamares/modules/bootloader.conf'
         'usr/share/calamares/modules/displaymanager.conf'
         'usr/share/calamares/modules/initcpio.conf'
@@ -33,24 +33,12 @@ prepare() {
   cd ${srcdir}/calamares
   sed -i -e 's/"Install configuration files" OFF/"Install configuration files" ON/' CMakeLists.txt
 
-  rm -r "src/modules/"{fstab,mount,packages}
-
-  cp -rf "${srcdir}/${pkgname}-config/usr/lib/calamares/modules"/{fstab,mount,packages} src/modules/
-
-  # patches here
-
   # change version
   #_ver="$(cat CMakeLists.txt | grep -m3 -e "  VERSION" | grep -o "[[:digit:]]*" | xargs | sed s'/ /./g')"
   _ver="$pkgver"
   printf 'Version: %s-%s\n' "${_ver}" "${pkgrel}"
   sed -i -e "s|\${CALAMARES_VERSION_MAJOR}.\${CALAMARES_VERSION_MINOR}.\${CALAMARES_VERSION_PATCH}|${_ver}-${pkgrel}|g" CMakeLists.txt
   sed -i -e "s|CALAMARES_VERSION_RC 1|CALAMARES_VERSION_RC 0|g" CMakeLists.txt
-
-  # change branding
-  sed -i -e "s/default/cachyos/g" src/branding/CMakeLists.txt
-
-  # remove default branding
-  rm -r src/branding/default
 }
 
 build() {
