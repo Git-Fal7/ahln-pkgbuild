@@ -2,7 +2,7 @@
 
 pkgname=ahln-calamares
 _pkgname=calamares
-pkgver=3.2.60
+pkgver=3.3
 pkgrel=1
 pkgdesc='Distribution-independent installer framework'
 arch=('i686' 'x86_64')
@@ -19,7 +19,8 @@ backup=('usr/share/calamares/modules/bootloader.conf'
         'usr/share/calamares/modules/initcpio.conf'
         'usr/share/calamares/modules/unpackfs.conf')
 
-source=("$_pkgname-$pkgver::$url/download/v$pkgver/$_pkgname-$pkgver.tar.gz"
+#source=("$_pkgname-$pkgver::$url/download/v$pkgver/$_pkgname-$pkgver.tar.gz"
+source=("calamares::git+https://github.com/calamares/calamares.git"
 	"calamares.desktop"
 	"calamares_polkit"
 	"49-nopasswd-calamares.rules")
